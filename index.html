@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografica Finanziaria Interattiva | La Matematica della Crescita</title>
+    <!-- Chosen Palette: Warm & welcoming -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative journey. It begins with the fundamental concept of calculating loss, visualized as a simple step-by-step diagram. It then addresses the more complex challenge of recovery, using an interactive bar chart for a powerful visual comparison. The narrative peaks with the compound interest section, featuring a full-width line chart to dramatically illustrate long-term growth versus simple interest. The application concludes with actionable insights like the Rule of 72 and the core principles of finance. This thematic, top-to-bottom flow enhances comprehension and user engagement. -->
+    <!-- Visualization & Content Choices: 
+        - Loss Calculation (from "Sezione 1") -> Goal: Organize -> Method: HTML/CSS Diagram. Justification: A step-by-step process is more clearly communicated as a visual flow than a chart for this introductory concept. CONFIRMATION: NO SVG/Mermaid used.
+        - Recovery Data (from "Sezione 2") -> Goal: Compare -> Method: Chart.js Bar Chart. Justification: A bar chart provides the most effective visual comparison between the magnitude of a loss and the required gain, highlighting the asymmetry. CONFIRMATION: Canvas rendering.
+        - Compound Interest Growth (from "Sezione 3") -> Goal: Change -> Method: Chart.js Line Chart. Justification: A line chart is the standard and most powerful way to show trends over time, perfectly illustrating the exponential divergence of compound growth from linear simple interest. CONFIRMATION: Canvas rendering.
+        - Rule of 72 (from "Sezione 3") -> Goal: Inform -> Method: Styled HTML Card. Justification: This is a single, memorable formula. A chart would be unnecessary and less impactful than a direct, clear presentation. CONFIRMATION: NO SVG used.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+        body { font-family: 'Lato', sans-serif; background-color: #F8F7F4; color: #3E3E3B; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 450px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-5xl">
+
+        <header class="text-center py-12 md:py-16">
+            <h1 class="text-4xl md:text-5xl font-black text-[#3E3E3B]">La Matematica della Crescita Finanziaria</h1>
+            <p class="mt-4 text-lg text-[#746F7A] max-w-3xl mx-auto">Una guida interattiva per padroneggiare i concetti chiave che definiscono il tuo successo: perdite, recuperi e la magia dell'interesse composto.</p>
+        </header>
+
+        <main class="space-y-16 md:space-y-24">
+
+            <section id="loss-calculation">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-[#3E3E3B]">1. Anatomia di una Perdita</h2>
+                    <p class="mt-2 text-[#746F7A] max-w-2xl mx-auto">Il primo passo per gestire i propri investimenti è capire come si calcola correttamente una perdita. Questa sezione scompone il processo in tre passaggi logici e intuitivi.</p>
+                </div>
+                <div class="bg-[#EADEDA] rounded-xl shadow-lg p-6 md:p-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="prose prose-lg max-w-none text-[#3E3E3B]">
+                            <h3 class="font-bold">Il Flusso di Calcolo</h3>
+                            <p>Partendo da un investimento di 250€ che scende a 200€, il diagramma mostra visivamente come si arriva a determinare la perdita percentuale del 20%.</p>
+                        </div>
+                        <div class="flex flex-col space-y-4">
+                            <div class="bg-white/80 p-4 rounded-lg text-center shadow">
+                                <p class="text-sm font-semibold text-[#746F7A]">Passo 1: Calcola la Perdita Reale (€)</p>
+                                <p class="text-2xl font-bold text-[#3E3E3B]">250€ - 200€ = <span class="text-[#A5A0A8]">50€</span></p>
+                            </div>
+                            <div class="text-center text-3xl font-thin text-[#BCAC9B]">↓</div>
+                            <div class="bg-white/80 p-4 rounded-lg text-center shadow">
+                                <p class="text-sm font-semibold text-[#746F7A]">Passo 2: Trova il Rapporto con l'Inizio</p>
+                                <p class="text-2xl font-bold text-[#3E3E3B]">50€ / 250€ = <span class="text-[#A5A0A8]">0,20</span></p>
+                            </div>
+                             <div class="text-center text-3xl font-thin text-[#BCAC9B]">↓</div>
+                            <div class="bg-white p-4 rounded-lg text-center shadow-inner">
+                                <p class="text-sm font-semibold text-[#746F7A]">Passo 3: Trasforma in Percentuale (%)</p>
+                                <p class="text-2xl font-bold text-[#3E3E3B]">0,20 x 100 = <span class="text-[#746F7A] font-black">20%</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="recovery-challenge">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-[#3E3E3B]">2. La Sfida del Recupero</h2>
+                    <p class="mt-2 text-[#746F7A] max-w-2xl mx-auto">Questo è il concetto che più spesso trae in inganno. Per recuperare una perdita è necessario un guadagno percentuale superiore, perché la base di capitale si è ridotta.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-10">
+                    <h3 class="text-2xl font-bold text-center mb-2 text-[#3E3E3B]">Perdita vs. Guadagno Necessario</h3>
+                    <p class="text-center text-[#746F7A] mb-6 max-w-2xl mx-auto">Questo grafico interattivo mette a confronto diretto diverse percentuali di perdita con il guadagno necessario per tornare al punto di partenza. Passa il mouse sulle barre per vedere i valori esatti.</p>
+                    <div class="chart-container">
+                        <canvas id="recoveryChart"></canvas>
+                    </div>
+                     <div class="mt-8 bg-[#EADEDA]/50 border-l-4 border-[#BCAC9B] p-4 rounded-r-lg">
+                        <p class="font-bold text-[#3E3E3B]">Il punto chiave:</p>
+                        <p class="text-[#746F7A]">Per recuperare una perdita del 50%, il tuo capitale deve raddoppiare, il che richiede un guadagno del 100%. Questo evidenzia l'importanza cruciale di limitare le perdite.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="compound-interest">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-[#3E3E3B]">3. L'Interesse Composto: l'Effetto Valanga</h2>
+                    <p class="mt-2 text-[#746F7A] max-w-2xl mx-auto">Definito da Einstein "l'ottava meraviglia del mondo", è il motore della crescita finanziaria a lungo termine. In parole semplici, è il processo con cui i tuoi guadagni iniziano a generare altri guadagni.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-10">
+                    <h3 class="text-2xl font-bold text-center mb-2 text-[#3E3E3B]">Crescita a 30 Anni: Semplice vs. Composto</h3>
+                    <p class="text-center text-[#746F7A] mb-6 max-w-2xl mx-auto">Il grafico visualizza la crescita di 120.000$ con un rendimento del 15%. La linea tratteggiata (interesse semplice) mostra una crescita costante. La linea continua (interesse composto) accelera drasticamente nel tempo, dimostrando il suo potere esponenziale.</p>
+                    <div class="relative h-[50vh] max-h-[500px]">
+                        <canvas id="compoundInterestChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+
+        <footer class="text-center mt-16 md:mt-24 py-8 border-t border-[#EADEDA]">
+             <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 mb-12">
+                <h3 class="text-2xl font-bold text-[#3E3E3B]">Un Trucco Veloce: La Regola del 72</h3>
+                <p class="mt-2 text-[#746F7A]">Per stimare rapidamente in quanti anni puoi raddoppiare il tuo capitale, usa questa semplice formula:</p>
+                <p class="font-mono text-xl bg-[#EADEDA]/50 p-3 rounded-md inline-block my-4">72 / Tasso di Interesse %</p>
+                <p class="text-[#746F7A]">Con un tasso del 15%, ci vorranno circa <b class="text-[#3E3E3B]">4.8 anni</b> per raddoppiare l'investimento.</p>
+             </div>
+            <h3 class="text-2xl font-bold text-[#3E3E3B]">I Pilastri della Finanza Personale</h3>
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#BCAC9B]">
+                    <h4 class="font-bold text-lg text-[#3E3E3B]">Controlla le Perdite</h4>
+                    <p class="text-sm text-[#746F7A] mt-1">Evitare grandi perdite è matematicamente più efficace che cercare grandi guadagni.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#BCAC9B]">
+                    <h4 class="font-bold text-lg text-[#3E3E3B]">Sii Paziente</h4>
+                    <p class="text-sm text-[#746F7A] mt-1">Non cercare di recuperare in fretta assumendo rischi maggiori. La matematica premia la costanza.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-[#BCAC9B]">
+                    <h4 class="font-bold text-lg text-[#3E3E3B]">Sfrutta il Tempo</h4>
+                    <p class="text-sm text-[#746F7A] mt-1">L'interesse composto è il tuo alleato più potente. Prima inizi, più grandi saranno i risultati.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const sharedTooltipOptions = {
+        plugins: {
+            tooltip: {
+                backgroundColor: 'rgba(62, 62, 59, 0.9)',
+                titleFont: { weight: 'bold' },
+                bodyFont: { size: 14 },
+                padding: 12,
+                cornerRadius: 8,
+                displayColors: false,
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                            return label.join(' ');
+                        }
+                        return label;
+                    }
+                }
+            }
+        }
+    };
+
+    const formatCurrency = (value) => new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+    
+    const formatNumberAsK_M = (value) => {
+        if (value >= 1000000) return '$' + (value / 1000000).toFixed(1) + 'M';
+        if (value >= 1000) return '$' + (value / 1000).toFixed(0) + 'K';
+        return '$' + value;
+    };
+    
+    const recoveryCtx = document.getElementById('recoveryChart');
+    if (recoveryCtx) {
+        new Chart(recoveryCtx, {
+            type: 'bar',
+            data: {
+                labels: ['-10%', '-25%', '-50%', '-75%'],
+                datasets: [{
+                    label: 'Recupero Necessario',
+                    data: [11.1, 33.3, 100, 300],
+                    backgroundColor: '#BCAC9B',
+                    borderColor: '#746F7A',
+                    borderWidth: 2,
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        grid: { drawOnChartArea: false },
+                        ticks: { callback: value => value + '%', font: { weight: 'bold' } },
+                        title: { display: true, text: 'Guadagno Percentuale Necessario' }
+                    },
+                    y: {
+                       grid: { display: false },
+                       ticks: { font: { size: 14, weight: 'bold' } },
+                       title: { display: true, text: 'Perdita Iniziale Subita' }
+                    }
+                },
+                plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: { display: false },
+                    tooltip: {
+                         ...sharedTooltipOptions.plugins.tooltip,
+                         callbacks: {
+                            ...sharedTooltipOptions.plugins.tooltip.callbacks,
+                            label: (context) => `Per recuperare una perdita del ${context.label}, serve un guadagno del ${context.parsed.x.toFixed(1)}%.`
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    const compoundCtx = document.getElementById('compoundInterestChart');
+    if (compoundCtx) {
+        const simpleInterestData = [120000, 210000, 300000, 390000, 480000, 570000, 660000];
+        const compoundInterestData = [120000, 241563, 485629, 984384, 1992013, 4030297, 8152850];
+
+        new Chart(compoundCtx, {
+            type: 'line',
+            data: {
+                labels: ['Anno 0', '5', '10', '15', '20', '25', '30'],
+                datasets: [{
+                    label: 'Interesse Composto',
+                    data: compoundInterestData,
+                    borderColor: '#A5A0A8',
+                    backgroundColor: 'rgba(165, 160, 168, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#A5A0A8',
+                    pointHoverRadius: 8
+                }, {
+                    label: 'Interesse Semplice',
+                    data: simpleInterestData,
+                    borderColor: '#BCAC9B',
+                    borderDash: [5, 5],
+                    fill: false,
+                    tension: 0.1,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#BCAC9B',
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: value => formatNumberAsK_M(value) }
+                    },
+                    x: { 
+                        title: { display: true, text: 'Anni' } 
+                    }
+                },
+                plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } },
+                    tooltip: {
+                        ...sharedTooltipOptions.plugins.tooltip,
+                         callbacks: {
+                            ...sharedTooltipOptions.plugins.tooltip.callbacks,
+                            label: (context) => `${context.dataset.label}: ${formatCurrency(context.parsed.y)}`
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                }
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
